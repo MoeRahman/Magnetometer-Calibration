@@ -48,7 +48,6 @@ def three_dim_scatter(cal_points:np.ndarray, uncal_points:np.ndarray) -> None:
 
     ax.legend()
     plt.show()
-    #plt.axis('square')
 
     return
 
