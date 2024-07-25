@@ -2,7 +2,7 @@ import typing
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import minimize 
+from scipy.optimize import least_squares
 
 def generate_uncalibrated_data() -> np.ndarray:
     
@@ -87,9 +87,10 @@ def unit_circle_fit(points:np.ndarray) -> np.ndarray:
     
     # Initialize with the identity affine transformation
     initial_affine_transformation = np.eye(4).flatten()
-    result = minimize(loss_function, initial_affine_transformation, 
-                      args=(points,), method='L-BFGS-B')
+    result = least_squares(loss_function, initial_affine_transformation, 
+                      args=(points,))
     optimized_affine_transformation = result.x.reshape((4, 4))
+    print(optimized_affine_transformation)
     
     return optimized_affine_transformation
 
