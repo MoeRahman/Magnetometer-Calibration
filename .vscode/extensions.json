@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "atlassian.atlascode",
+        "eamodio.gitlens",
+        "ms-python.debugpy",
+        "ms-python.mypy-type-checker",
+        "ms-python.pylint",
+        "ms-python.python",
+        "ms-pythn.vscode-pylance"
+    ]
+}
