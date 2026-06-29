@@ -28,7 +28,7 @@ class GenerateSensorData():
         soft_iron_bias = np.array([[1.0, 0.0, 0.0],
                                    [0.0, 1.0, 0.0],
                                    [0.0, 0.0, 1.0]])
-        
+
         hard_iron_bias = np.random.uniform(0, 10, (3,1))
 
         #Random Noise Matrix
@@ -39,9 +39,42 @@ class GenerateSensorData():
         return bias_sensor_data
 
 
+def scatter_hist(x, y, ax, ax_histx, ax_histy):
+    # no labels
+    ax_histx.tick_params(axis="x", labelbottom=False)
+    ax_histy.tick_params(axis="y", labelleft=False)
+
+    # the scatter plot:
+    ax.scatter(x, y, s = 0.25)
+
+    # now determine nice limits by hand:
+    binwidth = 0.05
+    xymax = max(np.max(np.abs(x)), np.max(np.abs(y)))
+    lim = (int(xymax/binwidth) + 1) * binwidth
+
+    bins = np.arange(-lim, lim + binwidth, binwidth)
+    ax_histx.hist(x, bins=bins)
+    ax_histy.hist(y, bins=bins, orientation='horizontal')
+
+    ax.grid()
+    
+
 def main() -> None:
     magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
     X, Y, Z = magnetometer_sensor_data.generate_points()[:3]
+
+    plots = [
+    ("X vs Y", X, Y),
+    ("X vs Z", X, Z),
+    ("Y vs Z", Y, Z)
+]
+
+    for title, data_x, data_y in plots:
+        fig, axs = plt.subplot_mosaic([['histx', '.'], ['scatter','histy']],
+                                    figsize=(6,6), width_ratios=(4, 1), height_ratios=(1, 4),
+                                    layout='constrained')
+        fig.suptitle(title)
+        scatter_hist(data_x, data_y, axs['scatter'], axs['histx'], axs['histy'])
 
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d', aspect = 'auto')
