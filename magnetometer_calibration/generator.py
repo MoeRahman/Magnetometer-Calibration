@@ -34,6 +34,12 @@ def main() -> None:
     magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
     X, Y, Z = magnetometer_sensor_data.generate_points()[:3]
 
+    fig = plt.figure(figsize=(6,6))
+    ax = fig.add_subplot(projection='3d')
+    ax.scatter(X, Y, Z, s = 1, c = "red")
+
+    plt.show()
+
     return
 
 

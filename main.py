@@ -5,7 +5,7 @@ import numpy as np
 
 NUMBER_OF_POINTS = 500
 
-def main() -> None:
+def main():
     magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
     X, Y, Z = magnetometer_sensor_data.generate_points()[:3]
 
