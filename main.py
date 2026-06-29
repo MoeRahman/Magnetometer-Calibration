@@ -5,10 +5,7 @@ import numpy as np
 
 NUMBER_OF_POINTS = 500
 
-def main():
-    magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
-    X, Y, Z = magnetometer_sensor_data.generate_points()[:3]
-
+def plot_3d_scatter(X, Y, Z):
     #Orthogonal Projection & Histogram & 3-D Scatter Plots
     fig, axs = plt.subplots(2, 2, figsize=(6,6), layout='constrained')
 
@@ -28,6 +25,12 @@ def main():
     axs[1,1].scatter(X, Y, Z, s = 1, c = "red")
 
     plt.show()
+
+def main():
+    magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
+    X, Y, Z = magnetometer_sensor_data.generate_points()[:3]
+
+    plot_3d_scatter(X, Y, Z)
 
     return
 
