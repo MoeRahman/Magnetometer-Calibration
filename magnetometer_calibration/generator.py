@@ -12,7 +12,6 @@ class GenerateSensorData():
 
     def generate_points(self) -> np.ndarray:
 
-        #Generate random phi and theta angles for sphere
         phi = np.random.uniform(0, np.pi*2, self.number_of_points)
         theta = np.random.uniform(0, np.pi*2, self.number_of_points)
 
@@ -20,14 +19,11 @@ class GenerateSensorData():
         mag_y = np.sin( theta ) * np.sin( phi )
         mag_z = np.cos( theta )
 
-        #Generate points on unit sphere
         true_data = np.array([mag_x, mag_y, mag_z])
 
-        #Random Magnetic Biases
         soft_iron_bias = np.array([[1.0, 0.1, 0.0], [0.0, 10.0, 0.0], [0.2, 0.0, 1.0]])
         hard_iron_bias = np.random.uniform(0, 5, (3,1))
 
-        #Random Noise Matrix
         noise = np.random.normal(0, 0.1, (3, self.number_of_points))
         bias_sensor_data = soft_iron_bias@true_data + hard_iron_bias + noise
 
@@ -35,14 +31,11 @@ class GenerateSensorData():
 
 
 def scatter_hist(x, y, ax, ax_histx, ax_histy):
-    # no labels
     ax_histx.tick_params(axis="x", labelbottom=False)
     ax_histy.tick_params(axis="y", labelleft=False)
 
-    # the scatter plot:
     ax.scatter(x, y, s = 0.25)
 
-    # now determine nice limits by hand:
     binwidth = 0.25
     xymax = max(np.max(np.abs(x)), np.max(np.abs(y)))
     lim = (int(xymax/binwidth) + 1) * binwidth
@@ -64,6 +57,7 @@ def main() -> None:
         ("Y vs Z", Y, Z)
     ]
 
+    #Orthogonal Projection & Histogram
     for title, data_x, data_y in plots:
         fig, axs = plt.subplot_mosaic([['histx', '.'], ['scatter','histy']],
                                     figsize=(6,6), width_ratios=(4, 1), height_ratios=(1, 4),
@@ -71,6 +65,7 @@ def main() -> None:
         fig.suptitle(title)
         scatter_hist(data_x, data_y, axs['scatter'], axs['histx'], axs['histy'])
 
+    #3-D Scatter Plots
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     ax.scatter(X, Y, Z, s = 1, c = "red")
