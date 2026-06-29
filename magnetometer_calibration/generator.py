@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-NUMBER_OF_POINTS = 500
-
 class GenerateSensorData():
     def __init__(self, number_of_points) -> None:
         self.number_of_points = number_of_points
@@ -28,8 +26,10 @@ class GenerateSensorData():
 
 
 def main() -> None:
+    NUMBER_OF_POINTS = 500
+
     magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
-    X, Y, Z = magnetometer_sensor_data.generate_points()[:3]
+    X, Y, Z = magnetometer_sensor_data.generate_points()
 
     fig = plt.figure(figsize=(6,6))
     ax = fig.add_subplot(projection='3d')
