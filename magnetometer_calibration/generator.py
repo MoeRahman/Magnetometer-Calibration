@@ -16,11 +16,11 @@ class GenerateSensorData():
 
         true_data = np.array([mag_x, mag_y, mag_z])
 
-        soft_iron_bias = np.array([[1.0, 0.1, 0.0], [0.0, 10.0, 0.0], [0.2, 0.0, 1.0]])
+        soft_iron_bias = np.array([[1.0, 0.5, 0.0], [0.0, 10.0, 0.0], [0.6, 0.0, 1.0]])
         hard_iron_bias = np.random.uniform(0, 5, (3,1))
 
         noise = np.random.normal(0, 0.1, (3, self.number_of_points))
-        bias_sensor_data = soft_iron_bias@true_data + hard_iron_bias + noise
+        bias_sensor_data = soft_iron_bias@true_data + noise
 
         return bias_sensor_data
 
