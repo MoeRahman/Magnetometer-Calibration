@@ -4,13 +4,13 @@ from magnetometer_calibration.calibration import CalibrateData
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plot_3d_scatter(coordinates):
+def plot_3d_scatter(title, coordinates):
     X, Y, Z = coordinates
 
     #Orthogonal Projection & Histogram & 3-D Scatter Plots
     fig, axs = plt.subplots(2, 2, figsize=(6,6), layout='constrained')
 
-    fig.suptitle("Uncalibrated Data")
+    fig.suptitle(title)
 
     Axis = [
         (axs[0,0], X, Y),
@@ -25,20 +25,20 @@ def plot_3d_scatter(coordinates):
     axs[1,1] = fig.add_subplot(2, 2, 4, projection='3d')
     axs[1,1].scatter(X, Y, Z, s = 1, c = "red")
 
-    plt.show()
-
 def main():
     NUMBER_OF_POINTS = 500
 
     magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
     coordinates = magnetometer_sensor_data.generate_points()
 
-    plot_3d_scatter(coordinates)
+    plot_3d_scatter("Uncalibrated Data", coordinates)
 
     calibrate = CalibrateData(coordinates)
-    calibrated_coordinates = calibrate.ellipsoidal_fit()[:3]
+    calibrated_coordinates = calibrate.ellipsoidal_fit()
 
-    plot_3d_scatter(calibrated_coordinates)
+    plot_3d_scatter("Calibrated Data", calibrated_coordinates[:3])
+
+    plt.show()
 
     return
 
