@@ -1,7 +1,9 @@
-import magnetometer_calibration.generator as mag_cal
+from magnetometer_calibration.generator import GenerateSensorData
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+NUMBER_OF_POINTS = 500
 
 def scatter_hist(x, y, ax, ax_histx, ax_histy):
     ax_histx.tick_params(axis="x", labelbottom=False)
@@ -20,7 +22,7 @@ def scatter_hist(x, y, ax, ax_histx, ax_histy):
     ax.grid()
 
 def main() -> None:
-    magnetometer_sensor_data = mag_cal.GenerateSensorData(mag_cal.NUMBER_OF_POINTS)
+    magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
     X, Y, Z = magnetometer_sensor_data.generate_points()[:3]
 
     plots = [
