@@ -9,10 +9,10 @@ class CalibrateData():
 
     def ellipsoidal_fit(self) -> np.ndarray:
         points = self.sensor_data
+        number_of_points = points.shape[1]
+        homogeneous_points = np.vstack((points, np.ones((1,number_of_points))))
 
         def transform(points, transform_matrix):
-            number_of_points = points.shape[1]
-            homogeneous_points = np.vstack((points, np.ones((1,number_of_points))))
             transformed_points = homogeneous_points.transpose() @ transform_matrix
             return transformed_points[:, :3]
 
@@ -25,13 +25,26 @@ class CalibrateData():
         initial_transform = np.eye(4).flatten()
         result = sp.optimize.least_squares(loss_function, initial_transform, args=(points,))
         optimized_transform_matrix = result.x.reshape((4,4))
-        return optimized_transform_matrix
+        print(optimized_transform_matrix)
+        transformed_points = homogeneous_points.transpose() @ optimized_transform_matrix
+
+        return transformed_points.transpose()
 
 
 def main():
-    print("Hello, World")
+    NUMBER_OF_POINTS = 500
+
+    magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
+    coordinates = magnetometer_sensor_data.generate_points()
+
+    calibrate = CalibrateData(coordinates)
+    calibrated_coordinates = calibrate.ellipsoidal_fit()
+    print(calibrated_coordinates[:3])
+
+
     return
 
 
 if __name__ == "__main__":
+    from generator import GenerateSensorData
     main()
