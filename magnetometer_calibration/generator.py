@@ -5,7 +5,6 @@ import numpy as np
 import scipy as sp
 
 NUMBER_OF_POINTS = 500
-SOFT_IRON_MAGNITUDE = 0.25
 
 class GenerateSensorData():
     def __init__(self, number_of_points) -> None:
@@ -25,11 +24,11 @@ class GenerateSensorData():
         true_data = np.array([mag_x, mag_y, mag_z])
 
         #Random Magnetic Bias
-        soft_iron_bias = np.array([[1.0, 0.0, 0.0],
-                                   [0.0, 1.0, 0.0],
-                                   [0.0, 0.0, 1.0]])
+        soft_iron_bias = np.array([[1.0, 0.5, 0.0],
+                                   [0.0, 10.0, 0.0],
+                                   [0.6, 0.0, 1.0]])
 
-        hard_iron_bias = np.random.uniform(0, 10, (3,1))
+        hard_iron_bias = np.random.uniform(0, 5, (3,1))
 
         #Random Noise Matrix
         noise = np.random.normal(0, 0.1, (3, self.number_of_points))
@@ -57,7 +56,7 @@ def scatter_hist(x, y, ax, ax_histx, ax_histy):
     ax_histy.hist(y, bins=bins, orientation='horizontal')
 
     ax.grid()
-    
+
 
 def main() -> None:
     magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
@@ -77,7 +76,7 @@ def main() -> None:
         scatter_hist(data_x, data_y, axs['scatter'], axs['histx'], axs['histy'])
 
     fig = plt.figure()
-    ax = fig.add_subplot(projection='3d', aspect = 'auto')
+    ax = fig.add_subplot(projection='3d', aspect = 'equal')
     ax.scatter(X, Y, Z, s = 1, c = "red")
 
     plt.show()
