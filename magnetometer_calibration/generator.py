@@ -23,12 +23,23 @@ class GenerateSensorData():
         bias_sensor_data = soft_iron_bias@true_data + hard_iron_bias + noise
         return bias_sensor_data
 
+    def generate_interesecting_rings(self) -> np.ndarray:
+        t = np.linspace(0, 2*np.pi, self.number_of_points // 2)
+        phase_shit = np.random.uniform(0, np.pi)
+        normalizing_gain = 1/np.sqrt(3)
+
+        ring_one = normalizing_gain*np.array([np.sin(t), np.cos(t), np.cos(t)])
+        ring_two = normalizing_gain*np.array([np.sin(t + phase_shit), np.cos(t - phase_shit), np.cos(t)])
+        true_data = np.append(ring_one, ring_two).reshape(3,500)
+
+        return true_data
+
 
 def main() -> None:
     NUMBER_OF_POINTS = 500
 
     magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
-    X, Y, Z = magnetometer_sensor_data.generate_uniform_points()
+    X, Y, Z = magnetometer_sensor_data.generate_interesecting_rings()
 
     fig = plt.figure(figsize=(6,6))
     ax = fig.add_subplot(projection='3d')
