@@ -23,13 +23,24 @@ class GenerateSensorData():
         return bias_sensor_data
 
     def generate_interesecting_rings(self) -> np.ndarray:
-        t = np.linspace(0, 2*np.pi, self.number_of_points // 2)
+        w0, w1, w2 = np.random.default_rng().random((3, 1))
+        normalized_weight = w0 + w1 + w2
         phase_shit = np.random.uniform(0, np.pi)
         normalizing_gain = 1/np.sqrt(3)
 
-        ring_one = normalizing_gain*np.array([np.sin(t), np.cos(t), np.cos(t)])
-        ring_two = normalizing_gain*np.array([np.sin(t + phase_shit), np.cos(t - phase_shit), np.cos(t)])
-        true_data = np.append(ring_one, ring_two).reshape(3,self.number_of_points)
+        ring_one_points = self.number_of_points*w0/normalized_weight
+        ring_two_points = self.number_of_points*w1/normalized_weight
+        sphere_points   = self.number_of_points*w2/normalized_weight
+
+        t0 = np.linspace(0, 2*np.pi, int(ring_one_points[0]))
+        t1 = np.linspace(0, 2*np.pi, int(ring_two_points[0]))
+        phi = np.random.uniform(0, np.pi*2, int(sphere_points[0]))
+        theta = np.random.uniform(0, np.pi*2, int(sphere_points[0]))
+
+        ring_one = normalizing_gain*np.array([np.sin(t0), np.cos(t0), np.cos(t0)])
+        ring_two = normalizing_gain*np.array([np.sin(t1 + phase_shit), np.cos(t1 - phase_shit), np.cos(t1)])
+        sphere = np.array([np.sin( theta ) * np.cos( phi ), np.sin( theta ) * np.sin( phi ), np.cos( theta )])
+        true_data = np.hstack((ring_one, ring_two, sphere))
         return true_data
 
 
@@ -42,6 +53,8 @@ def main() -> None:
     fig = plt.figure(figsize=(6,6))
     ax = fig.add_subplot(projection='3d')
     ax.scatter(X, Y, Z, s = 1, c = "red")
+
+
 
     plt.show()
     return
