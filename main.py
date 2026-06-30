@@ -100,7 +100,7 @@ def plot_orthogonal_histogram(title, uncalibrated, centered, scaled):
 
 
 def main():
-    NUMBER_OF_POINTS = 250
+    NUMBER_OF_POINTS = 1000
 
     magnetometer_data = GenerateSensorData(NUMBER_OF_POINTS)
     uncalibrated_data = magnetometer_data.generate_interesecting_rings()

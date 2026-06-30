@@ -43,7 +43,7 @@ class GenerateSensorData():
         sphere = np.array([np.sin( theta ) * np.cos( phi ), np.sin( theta ) * np.sin( phi ), np.cos( theta )])
         true_data = np.hstack((ring_one, ring_two, sphere))
 
-        soft_iron_bias = np.array([[5.0, -0.5, 0.2], [-0.2, 2.0, 0.1], [0.3, 0.4, -3.0]])
+        soft_iron_bias = np.array([[1.2, -0.5, 0.2], [-0.2, 1.6, 0.1], [0.3, 0.4, -1.1]])
         hard_iron_bias = np.random.uniform(-2, 2, (3,1))
 
         noise = np.random.normal(0, 0.1, (3, self.number_of_points))
