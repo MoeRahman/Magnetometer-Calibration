@@ -4,6 +4,7 @@ from magnetometer_calibration.calibration import CalibrateData
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def plot_3d_scatter(title, coordinates):
     X, Y, Z = coordinates
 
@@ -24,6 +25,8 @@ def plot_3d_scatter(title, coordinates):
 
     axs[1,1] = fig.add_subplot(2, 2, 4, projection='3d')
     axs[1,1].scatter(X, Y, Z, s = 1, c = "red")
+    return
+
 
 def main():
     NUMBER_OF_POINTS = 500
@@ -34,13 +37,21 @@ def main():
     plot_3d_scatter("Uncalibrated Data", coordinates)
 
     calibrate = CalibrateData(coordinates)
-    calibrated_coordinates = calibrate.ellipsoidal_fit()
 
-    plot_3d_scatter("Calibrated Data", calibrated_coordinates[:3])
+    hard_iron_bias_estimate = calibrate.hard_iron_bias()
+    calibrate.sensor_data -= hard_iron_bias_estimate.reshape(3,1)
+    plot_3d_scatter("Recentered Data", calibrate.sensor_data[:3])
+
+    soft_iron_bias_estimate = calibrate.soft_iron_bias()
+    homogeneous_points = np.vstack((calibrate.sensor_data, np.ones((1, calibrate.sensor_data.shape[1]))))
+    calibrated_data = homogeneous_points.transpose()@soft_iron_bias_estimate
+
+    plot_3d_scatter("Calibrated Data", calibrated_data.transpose()[:3])
 
     plt.show()
 
     return
+
 
 if __name__ == "__main__":
     main()
