@@ -49,7 +49,6 @@ def main():
     plot_3d_scatter("Calibrated Data", calibrated_data.transpose()[:3])
 
     plt.show()
-
     return
 
 

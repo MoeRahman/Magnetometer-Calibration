@@ -47,7 +47,6 @@ def main():
 
     homogeneous_points = np.vstack((coordinates, np.ones((1, coordinates.shape[1]))))
     print(homogeneous_points.transpose()@transformation_matrix)
-
     return
 
 

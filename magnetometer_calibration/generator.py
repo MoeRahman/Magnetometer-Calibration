@@ -21,7 +21,6 @@ class GenerateSensorData():
 
         noise = np.random.normal(0, 0.1, (3, self.number_of_points))
         bias_sensor_data = soft_iron_bias@true_data + hard_iron_bias + noise
-
         return bias_sensor_data
 
 
@@ -36,7 +35,6 @@ def main() -> None:
     ax.scatter(X, Y, Z, s = 1, c = "red")
 
     plt.show()
-
     return
 
 
