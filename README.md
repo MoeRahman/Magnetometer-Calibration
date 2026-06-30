@@ -5,7 +5,7 @@ The calibrated data can then be used for orientation estimation for UAV or headi
 
 ### Raw Uncalibarated Data:
 
-<img src=plots/xy.png width=33%/> <img src=plots/xz.png width=33%/> <img src=plots/yz.png width=33%/>
+<img src=plots/xy.png width=33%/><img src=plots/xz.png width=33%/><img src=plots/yz.png width=33%/>
 
 <i> Figure 2: Orthogonal projections & histogram of 3-D scatter plot </i>
 
