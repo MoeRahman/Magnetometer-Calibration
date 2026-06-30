@@ -36,7 +36,7 @@ def main():
     NUMBER_OF_POINTS = 500
 
     magnetometer_sensor_data = GenerateSensorData(NUMBER_OF_POINTS)
-    coordinates = magnetometer_sensor_data.generate_points()
+    coordinates = magnetometer_sensor_data.generate_uniform_points()
 
     calibrate = CalibrateData(coordinates)
     hard_iron_bias_estimate = calibrate.hard_iron_bias()
