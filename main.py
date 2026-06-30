@@ -56,7 +56,7 @@ def main():
     NUMBER_OF_POINTS = 250
 
     magnetometer_data = GenerateSensorData(NUMBER_OF_POINTS)
-    uncalibrated_data = magnetometer_data.generate_uniform_points()
+    uncalibrated_data = magnetometer_data.generate_interesecting_rings()
     uncentered_data = CalibrateData(uncalibrated_data)
 
     hard_iron_bias = uncentered_data.hard_iron_bias()

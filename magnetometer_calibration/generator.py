@@ -6,7 +6,6 @@ class GenerateSensorData():
         self.number_of_points = number_of_points
 
     def generate_uniform_points(self) -> np.ndarray:
-
         phi = np.random.uniform(0, np.pi*2, self.number_of_points)
         theta = np.random.uniform(0, np.pi*2, self.number_of_points)
 
@@ -30,8 +29,7 @@ class GenerateSensorData():
 
         ring_one = normalizing_gain*np.array([np.sin(t), np.cos(t), np.cos(t)])
         ring_two = normalizing_gain*np.array([np.sin(t + phase_shit), np.cos(t - phase_shit), np.cos(t)])
-        true_data = np.append(ring_one, ring_two).reshape(3,500)
-
+        true_data = np.append(ring_one, ring_two).reshape(3,self.number_of_points)
         return true_data
 
 
