@@ -46,7 +46,7 @@ class GenerateSensorData():
         soft_iron_bias = np.array([[1.2, -0.5, 0.2], [-0.2, 1.6, 0.1], [0.3, 0.4, -1.1]])
         hard_iron_bias = np.random.uniform(-2, 2, (3,1))
 
-        noise = np.random.normal(0, 0.1, (3, self.number_of_points))
+        noise = np.random.normal(0, 0.07, (3, self.number_of_points))
         bias_sensor_data = soft_iron_bias@true_data + hard_iron_bias + noise
         return bias_sensor_data
 
