@@ -49,6 +49,53 @@ def plot_3d_scatter(title, uncalibrated, centered, scaled):
 
 def plot_orthogonal_histogram(title, uncalibrated, centered, scaled):
 
+    x0, y0, z0 = uncalibrated
+    x1, y1, z1 = centered
+    x2, y2, z2 = scaled
+
+    def scatter_hist(x, y, ax, ax_histx, ax_histy, color):
+
+        ax_histx.tick_params(axis="x", labelbottom=False)
+        ax_histy.tick_params(axis="y", labelleft=False)
+
+        ax.scatter(x, y, s = 2, c = color)
+        ax.grid()
+
+        binwidth = 0.25
+        xymax = max(np.max(np.abs(x)), np.max(np.abs(y)))
+        lim = (int(xymax/binwidth) + 1) * binwidth
+
+        bins = np.arange(-lim, lim + binwidth, binwidth)
+        ax_histx.hist(x, bins=bins)
+        ax_histy.hist(y, bins=bins, orientation='horizontal')
+        return
+
+    fig0, axs0 = plt.subplots(1, 3, figsize=(12, 4), layout="constrained")
+    fig1, axs1 = plt.subplots(1, 3, figsize=(12, 4), layout="constrained")
+    fig2, axs2 = plt.subplots(1, 3, figsize=(12, 4), layout="constrained")
+
+    fig0.suptitle("Uncalibrated")
+    fig1.suptitle("Hard-Iron Bias Fix")
+    fig2.suptitle("Soft-Iron Bias Fix")
+
+    plots = [
+        ("red", x0, y0, 0, axs0),
+        ("red", x0, z0, 1, axs0),
+        ("red", y0, z0, 2, axs0),
+        ("blue", x1, y1, 0, axs1),
+        ("blue", x1, z1, 1, axs1),
+        ("blue", y1, z1, 2, axs1),
+        ("green", x2, y2, 0, axs2),
+        ("green", x2, z2, 1, axs2),
+        ("green", y2, z2, 2, axs2),
+    ]
+
+    for color, data_x, data_y, pos, ax in plots:
+        ax[pos].scatter(data_x, data_y, c=color, alpha = 0.75)
+        ax[pos].grid()
+
+    plt.show()
+
     return
 
 
@@ -67,6 +114,7 @@ def main():
     calibrated_data = (homogeneous_points.transpose()@soft_iron_bias).transpose()[:3]
 
     plot_3d_scatter("Data Calibration", uncalibrated_data, centered_data, calibrated_data)
+    plot_orthogonal_histogram("Histogram", uncalibrated_data, centered_data, calibrated_data)
 
     plt.show()
     return

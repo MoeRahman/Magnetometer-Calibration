@@ -26,22 +26,29 @@ class GenerateSensorData():
         w0, w1, w2 = np.random.default_rng().random((3, 1))
         normalized_weight = w0 + w1 + w2
         phase_shit = np.random.uniform(0, np.pi)
-        normalizing_gain = 1/np.sqrt(3)
 
-        ring_one_points = self.number_of_points*w0/normalized_weight
-        ring_two_points = self.number_of_points*w1/normalized_weight
-        sphere_points   = self.number_of_points*w2/normalized_weight
+        ring_one_points = int((self.number_of_points*w0/normalized_weight)[0])
+        ring_two_points = int((self.number_of_points*w1/normalized_weight)[0])
+        sphere_points   = self.number_of_points - ring_one_points - ring_two_points
 
-        t0 = np.linspace(0, 2*np.pi, int(ring_one_points[0]))
-        t1 = np.linspace(0, 2*np.pi, int(ring_two_points[0]))
-        phi = np.random.uniform(0, np.pi*2, int(sphere_points[0]))
-        theta = np.random.uniform(0, np.pi*2, int(sphere_points[0]))
+        t0 = np.linspace(0, 2*np.pi, ring_one_points)
+        t1 = np.linspace(0, 2*np.pi, ring_two_points)
 
-        ring_one = normalizing_gain*np.array([np.sin(t0), np.cos(t0), np.cos(t0)])
-        ring_two = normalizing_gain*np.array([np.sin(t1 + phase_shit), np.cos(t1 - phase_shit), np.cos(t1)])
+        ring_one = np.array([np.cos(t0), np.sin(t0), t0*0])
+        ring_two = np.array([t1*0, np.cos(t1), np.sin(t1)])
+
+        phi = np.random.uniform(0, np.pi*2, sphere_points)
+        theta = np.random.uniform(0, np.pi*2, sphere_points)
+
         sphere = np.array([np.sin( theta ) * np.cos( phi ), np.sin( theta ) * np.sin( phi ), np.cos( theta )])
         true_data = np.hstack((ring_one, ring_two, sphere))
-        return true_data
+
+        soft_iron_bias = np.array([[5.0, -0.5, 0.2], [-0.2, 2.0, 0.1], [0.3, 0.4, -3.0]])
+        hard_iron_bias = np.random.uniform(-2, 2, (3,1))
+
+        noise = np.random.normal(0, 0.1, (3, self.number_of_points))
+        bias_sensor_data = soft_iron_bias@true_data + hard_iron_bias + noise
+        return bias_sensor_data
 
 
 def main() -> None:
@@ -53,8 +60,6 @@ def main() -> None:
     fig = plt.figure(figsize=(6,6))
     ax = fig.add_subplot(projection='3d')
     ax.scatter(X, Y, Z, s = 1, c = "red")
-
-
 
     plt.show()
     return
