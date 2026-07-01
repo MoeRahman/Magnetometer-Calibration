@@ -1,7 +1,7 @@
 # Magnetometer-Calibration
 
 This repository allows developers to calibrate raw magnitometer sensor data into a unit sphere.
-The calibrated data can then be used for orientation estimation for UAV or heading estimation fro ground vehicles.
+The calibrated data can then be used for orientation estimation for UAV or heading estimation for ground vehicles.
 
 ### Raw Uncalibarated Data:
 
